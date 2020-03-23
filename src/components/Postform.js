@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {createPost} from '../actions/postAction.js'
 
 
 class Postform extends Component{
@@ -9,26 +11,17 @@ class Postform extends Component{
 
     handleChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
-        console.log(this.state)
     }
 
     onSubmit = (e) => {
-        console.log("onSubmit")
         e.preventDefault()
         const post = {
             title: this.state.title,
             body: this.state.body
         }
 
-        fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
-            headers: {
-                'content-type' : 'application/json'
-            },
-            body: JSON.stringify(post)
-        })
-        .then(res => res.json())
-        .then(data => console.log(data))
+        this.props.createPost(post)
+        console.log(this.props)
     }
 
     render(){
@@ -51,4 +44,4 @@ class Postform extends Component{
     }
 }
 
-export default Postform
+export default connect(null, {createPost})(Postform)
